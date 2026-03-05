@@ -11,7 +11,10 @@ class TimestampSubscriber implements EventSubscriber
 {
     public function getSubscribedEvents(): array
     {
-        return [];
+        return [
+            'prePersist',
+            'preUpdate',
+        ];
     }
 
     public function prePersist(LifecycleEventArgs $args): void
@@ -19,6 +22,10 @@ class TimestampSubscriber implements EventSubscriber
 
         $entity = $args->getObject();
         $now = new Carbon();
+
+        if (method_exists($entity, 'setCreatedAt')) {
+            $entity->setCreatedAt($now);
+        }
 
         if (method_exists($entity, 'setUpdatedAt')) {
             $entity->setUpdatedAt($now);
@@ -39,7 +46,7 @@ class TimestampSubscriber implements EventSubscriber
         $entity = $args->getObject();
         $now = new Carbon();
 
-        if (method_exists($entity, 'setCreatedat')) {
+        if (method_exists($entity, 'setCreatedAt')) {
             $entity->setCreatedAt($now);
         } else {
             $reflection = new \ReflectionClass($entity);

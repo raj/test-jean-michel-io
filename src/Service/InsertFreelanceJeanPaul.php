@@ -23,11 +23,14 @@ readonly class InsertFreelanceJeanPaul
         if (!$freelanceJeanPaul->getFreelance()) {
             $freelance = new Freelance();
             $freelance->addFreelanceJeanPaul($freelanceJeanPaul);
+            $this->entityManager->persist($freelance);
         }
 
         $freelanceJeanPaul->setFirstName($dto->firstName);
         $freelanceJeanPaul->setLastName($dto->lastName);
         $freelanceJeanPaul->setJobTitle($dto->jobTitle);
+
+        $this->entityManager->persist($freelanceJeanPaul);
 
         return $freelanceJeanPaul;
     }
