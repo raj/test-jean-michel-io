@@ -19,7 +19,6 @@ class TimestampSubscriber implements EventSubscriber
 
     public function prePersist(LifecycleEventArgs $args): void
     {
-
         $entity = $args->getObject();
         $now = new Carbon();
 
@@ -30,14 +29,7 @@ class TimestampSubscriber implements EventSubscriber
         if (method_exists($entity, 'setUpdatedAt')) {
             $entity->setUpdatedAt($now);
         } else {
-            $reflection = new \ReflectionClass($entity);
-            if ($reflection->hasProperty('updatedAt')) {
-                $property = $reflection->getProperty('updatedAt');
-                $property->setAccessible(true);
-                if ($property->getValue($entity) === null) {
-                    $property->setValue($entity, $now);
-                }
-            }
+            $this->setPropertyValue($entity, 'updatedAt', $now);
         }
     }
 
@@ -49,25 +41,26 @@ class TimestampSubscriber implements EventSubscriber
         if (method_exists($entity, 'setCreatedAt')) {
             $entity->setCreatedAt($now);
         } else {
-            $reflection = new \ReflectionClass($entity);
-            if ($reflection->hasProperty('createdAt')) {
-                $property = $reflection->getProperty('createdAt');
-                $property->setAccessible(true);
-                if ($property->getValue($entity) === null) {
-                    $property->setValue($entity, $now);
-                }
-            }
+            $this->setPropertyValue($entity, 'createdAt', $now);
         }
 
         if (method_exists($entity, 'setUpdatedAt')) {
             $entity->setUpdatedAt($now);
         } else {
-            $reflection = new \ReflectionClass($entity);
-            if ($reflection->hasProperty('updatedAt')) {
-                $property = $reflection->getProperty('updatedAt');
-                $property->setAccessible(true);
-                $property->setValue($entity, $now);
-            }
+            $this->setPropertyValue($entity, 'updatedAt', $now);
         }
+    }
+
+    private function setPropertyValue(object $entity, string $propertyName, mixed $value): void
+    {
+        $reflection = new \ReflectionClass($entity);
+
+        if (!$reflection->hasProperty($propertyName)) {
+            return;
+        }
+
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+        $property->setValue($entity, $value);
     }
 }
