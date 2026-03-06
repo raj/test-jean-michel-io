@@ -29,6 +29,8 @@ class ConsolidateFreelanceCommand extends Command
             $this->freelanceConsolider->consolidate($freelance);
         }
 
+        $this->entityManager->flush();
+
         return Command::SUCCESS;
     }
 }
