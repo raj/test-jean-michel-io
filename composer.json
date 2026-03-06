@@ -30,6 +30,7 @@
         "symfony/yaml": "7.2.*"
     },
     "require-dev": {
+        "jetbrains/phpstorm-attributes": "^1.2",
         "phpunit/phpunit": "^9.6.34",
         "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",
