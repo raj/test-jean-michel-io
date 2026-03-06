@@ -5,6 +5,7 @@ use App\Dto\FreelanceLinkedInDto;
 use App\Dto\LinkedInProfileUrl;
 use App\Entity\Freelance;
 use App\Entity\FreelanceLinkedIn;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class InsertFreelanceLinkedIn
@@ -21,11 +22,15 @@ readonly class InsertFreelanceLinkedIn
         if (!$freelanceLinkedIn) {
             $freelanceLinkedIn = new FreelanceLinkedIn();
             $freelanceLinkedIn->setUrl($linkedInUrl);
+            $freelanceLinkedIn->setCreatedAt(Carbon::now());
         }
+        $freelanceLinkedIn->setUpdatedAt(Carbon::now());
 
         if (!$freelanceLinkedIn->getFreelance()) {
             $freelance = new Freelance();
             $freelance->addFreelanceLinkedIn($freelanceLinkedIn);
+            $freelance->setCreatedAt(Carbon::now());
+            $freelance->setUpdatedAt(Carbon::now());
             $this->entityManager->persist($freelance);
         }
 

@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Dto\FreelanceJeanPaulDto;
 use App\Entity\Freelance;
 use App\Entity\FreelanceJeanPaul;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class InsertFreelanceJeanPaul
@@ -18,11 +19,15 @@ readonly class InsertFreelanceJeanPaul
         if (!$freelanceJeanPaul) {
             $freelanceJeanPaul = new FreelanceJeanPaul();
             $freelanceJeanPaul->setJeanPaulId($dto->jeanPaulId);
+            $freelanceJeanPaul->setCreatedAt(Carbon::now());
         }
+        $freelanceJeanPaul->setUpdatedAt(Carbon::now());
 
         if (!$freelanceJeanPaul->getFreelance()) {
             $freelance = new Freelance();
             $freelance->addFreelanceJeanPaul($freelanceJeanPaul);
+            $freelance->setCreatedAt(Carbon::now());
+            $freelance->setUpdatedAt(Carbon::now());
             $this->entityManager->persist($freelance);
         }
 

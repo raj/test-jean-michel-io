@@ -12,30 +12,30 @@ class FreelanceConso
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?string $jobTitle = null;
 
     #[ORM\OneToOne(inversedBy: 'freelanceConso', cascade: ['persist', 'remove'])]
     private ?Freelance $freelance = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?string $linkedInUrl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['freelance_detail'])]
+    #[Groups(['freelance_detail', 'freelance_conso'])]
     private ?string $fullName = null;
 
     public function getId(): ?int

@@ -35,6 +35,13 @@ class FreelanceRepository extends ServiceEntityRepository
     #[ArrayShape(['firstName' => "string", 'quantity' => "int"])]
     public function findTheMostUseFirstname(): ?array
     {
-        return [];
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('fc.firstName, COUNT(fc.id) as quantity')
+            ->from(\App\Entity\FreelanceConso::class, 'fc')
+            ->groupBy('fc.firstName')
+            ->orderBy('quantity', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

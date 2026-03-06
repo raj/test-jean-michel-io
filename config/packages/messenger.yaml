@@ -14,10 +14,8 @@ framework:
              'App\Message\InsertFreelanceJeanPaulMessage': insert_async
              'App\Message\InsertFreelanceLinkedInMessage': insert_async
 
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+when@test:
+    framework:
+        messenger:
+            transports:
+                insert_async: 'sync://'
