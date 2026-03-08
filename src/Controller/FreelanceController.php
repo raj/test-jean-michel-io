@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Dto\SearchFreelanceConsoDto;
-use App\Service\FreelanceSearchService;
+use App\Service\FreelanceSearchServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class FreelanceController extends AbstractController
         #[MapQueryParameter] 
         #[Assert\Valid]
         SearchFreelanceConsoDto $dto, 
-        FreelanceSearchService $searchService
+        FreelanceSearchServiceInterface $searchService
     ): JsonResponse
     {
         $freelanceConsos = $searchService->searchFreelance($dto->query);

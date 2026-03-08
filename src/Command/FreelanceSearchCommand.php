@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Service\FreelanceSearchService;
-use App\Service\FreelanceSerializer;
+use App\Service\FreelanceSearchServiceInterface;
+use App\Service\FreelanceSerializerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,8 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FreelanceSearchCommand extends Command
 {
     public function __construct(
-        private readonly FreelanceSearchService $freelanceSearchService,
-        private readonly FreelanceSerializer $freelanceSerializer
+        private readonly FreelanceSearchServiceInterface $freelanceSearchService,
+        private readonly FreelanceSerializerInterface $freelanceSerializer
     )
     {
         parent::__construct();

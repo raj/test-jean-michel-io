@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Freelance;
-use App\Service\FreelanceSerializer;
+use App\Service\FreelanceSerializerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FreelanceDetailCommand extends Command
 {
     public function __construct(
-        private readonly FreelanceSerializer $freelanceSerializer,
+        private readonly FreelanceSerializerInterface $freelanceSerializer,
         private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();

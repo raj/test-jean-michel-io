@@ -5,7 +5,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 
-readonly class FreelanceSearchService
+readonly class FreelanceSearchService implements FreelanceSearchServiceInterface
 {
     public function __construct(
         #[Autowire(service: "fos_elastica.finder.freelance")]

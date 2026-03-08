@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-readonly class FreelanceSerializer
+readonly class FreelanceSerializer implements FreelanceSerializerInterface
 {
     public function __construct(private SerializerInterface $serializer)
     {
