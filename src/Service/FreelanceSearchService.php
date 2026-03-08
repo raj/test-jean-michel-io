@@ -1,21 +1,19 @@
 <?php
 namespace App\Service;
 
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use App\Repository\FreelanceConsoRepository;
 
 
 readonly class FreelanceSearchService implements FreelanceSearchServiceInterface
 {
     public function __construct(
-        #[Autowire(service: "fos_elastica.finder.freelance")]
-        private PaginatedFinderInterface $freelanceFinder,
+        private FreelanceConsoRepository $freelanceConsoRepository,
     )
     {
     }
 
     public function searchFreelance(string $query): array
     {
-        return $this->freelanceFinder->find($query);
+        return $this->freelanceConsoRepository->search($query);
     }
 }

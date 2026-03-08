@@ -5,15 +5,29 @@ namespace App\Repository;
 use App\Entity\FreelanceConso;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @extends ServiceEntityRepository<FreelanceConso>
  */
 class FreelanceConsoRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        #[Autowire(service: "fos_elastica.finder.freelance")]
+        private readonly PaginatedFinderInterface $freelanceFinder
+    )
     {
         parent::__construct($registry, FreelanceConso::class);
+    }
+
+    /**
+     * @return FreelanceConso[]
+     */
+    public function search(string $query): array
+    {
+        return $this->freelanceFinder->find($query);
     }
 
     //    /**
