@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FreelanceLinkedInRepository::class)]
+#[ORM\UniqueConstraint(name: "UNIQ_LINKEDIN_URL", columns: ["url"])]
 class FreelanceLinkedIn
 {
     #[ORM\Id]

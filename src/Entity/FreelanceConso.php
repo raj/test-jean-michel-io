@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FreelanceConsoRepository::class)]
+#[ORM\Index(name: "IDX_FIRST_LAST_NAME", columns: ["first_name", "last_name"])]
+#[ORM\Index(name: "IDX_FULL_NAME", columns: ["full_name"])]
 class FreelanceConso
 {
     #[ORM\Id]
