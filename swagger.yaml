@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: Freelance Consolidator API
+  description: |
+    API de consolidation et de recherche de profils freelances.
+    Cette API permet de vérifier l'état du service et de rechercher des profils consolidés issus de différentes sources (LinkedIn, JeanPaul, etc.).
+  version: 1.1.0
+  contact:
+    name: Support Technique
+
+servers:
+  - url: http://localhost:8000
+    description: Serveur de développement local (Docker)
+
+tags:
+  - name: Status
+    description: État de santé du service
+  - name: Freelances
+    description: Opérations sur les profils de freelances
+
+paths:
+  /status/up:
+    get:
+      tags:
+        - Status
+      summary: Vérifier l'état de l'API (GET)
+      description: Renvoie un simple message confirmant que le service est opérationnel.
+      responses:
+        '200':
+          description: Service opérationnel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              examples:
+                success:
+                  value:
+                    status: ok
+    post:
+      tags:
+        - Status
+      summary: Vérifier l'état de l'API (POST)
+      description: Identique au GET, utilisé pour confirmer la réception de requêtes POST.
+      responses:
+        '200':
+          description: Service opérationnel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              examples:
+                success:
+                  value:
+                    status: ok
+
+  /freelances:
+    get:
+      tags:
+        - Freelances
+      summary: Recherche de freelances consolidés
+      description: |
+        Effectue une recherche plein texte dans l'index Elasticsearch des profils consolidés.
+        La recherche s'effectue sur les prénoms, noms et titres de postes.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Mot-clé de recherche (nom, prénom ou métier).
+          schema:
+            type: string
+            minLength: 1
+          example: Alice
+      responses:
+        '200':
+          description: Liste de freelances correspondants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FreelanceConso'
+              examples:
+                search_results_alice:
+                  summary: Résultats pour "Alice"
+                  value:
+                    - id: 1
+                      firstName: Alice
+                      lastName: Durand
+                      fullName: Alice Durand
+                      jobTitle: Développeur Fullstack
+                      linkedInUrl: https://www.linkedin.com/in/alice-durand-0
+                    - id: 12
+                      firstName: Alice
+                      lastName: Mercier
+                      fullName: Alice Mercier
+                      jobTitle: Développeur backend
+                      linkedInUrl: https://www.linkedin.com/in/alice-mercier-11
+                search_results_dev:
+                  summary: Résultats pour "Développeur"
+                  value:
+                    - id: 5
+                      firstName: François
+                      lastName: Lambert
+                      fullName: François Lambert
+                      jobTitle: Administrateur Système
+                      linkedInUrl: https://www.linkedin.com/in/francois-lambert-5
+        '400':
+          description: Requête invalide (paramètre manquant ou vide)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+    
+    FreelanceConso:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant unique en base de données
+          example: 123
+        firstName:
+          type: string
+          description: Prénom du freelance
+          example: Alice
+        lastName:
+          type: string
+          description: Nom de famille du freelance
+          example: Durand
+        fullName:
+          type: string
+          description: Nom complet (prénom + nom)
+          example: Alice Durand
+        jobTitle:
+          type: string
+          description: Titre du poste (normalisé sur la source la plus riche)
+          example: Développeur Fullstack
+        linkedInUrl:
+          type: string
+          format: uri
+          description: URL du profil LinkedIn
+          example: https://www.linkedin.com/in/alice-durand-0
+
+    ErrorResponse:
+      type: object
+      properties:
+        title:
+          type: string
+          example: An error occurred
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          example: This value should not be blank.
+
+security: [] # Pas d'authentification configurée sur cette API

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FreelanceJeanPaulRepository::class)]
+#[ORM\UniqueConstraint(name: "UNIQ_JEAN_PAUL_ID", columns: ["jean_paul_id"])]
 class FreelanceJeanPaul
 {
     #[ORM\Id]
@@ -34,11 +35,11 @@ class FreelanceJeanPaul
     #[ORM\Column]
     private ?int $jeanPaulId = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private \DateTimeInterface $createdAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private \DateTimeInterface $updatedAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {

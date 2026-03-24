@@ -24,3 +24,5 @@
 .docker-dev/.data
 
 supervisord.log
+composer.phar
+

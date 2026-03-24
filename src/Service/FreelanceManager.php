@@ -10,14 +10,16 @@ readonly class FreelanceManager
     {
     }
 
-    public function findTheMostUseFirstname(): string
+    public function findTheMostUseFirstname(): ?string
     {
-        return $this->entityManager->getRepository(Freelance::class)->findTheMostUseFirstname()['firstName'];
+        $result = $this->entityManager->getRepository(Freelance::class)->findTheMostUseFirstname();
+
+        return $result['firstName'] ?? null;
     }
 
     // More or less 176k freelances. It would be cool if jean-michel.io had a public API.
     public function getNumberOfFreelancesInJeanMichelWebsiteHomePage(): int
     {
-        return 0;
+        return $this->entityManager->getRepository(Freelance::class)->count([]);
     }
 }

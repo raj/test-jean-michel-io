@@ -3,6 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Message\InsertFreelanceJeanPaulMessage;
+use App\Service\FreelanceConsolider;
 use App\Service\InsertFreelanceJeanPaul;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Lock\LockFactory;
@@ -13,6 +14,7 @@ final readonly class InsertFreelanceJeanPaulMessageHandler
 {
     public function __construct(
         private InsertFreelanceJeanPaul $insertFreelanceJeanPaul,
+        private FreelanceConsolider     $freelanceConsolider,
         private LockFactory             $lockFactory,
         private EntityManagerInterface  $entityManager)
     {
@@ -20,11 +22,13 @@ final readonly class InsertFreelanceJeanPaulMessageHandler
 
     public function __invoke(InsertFreelanceJeanPaulMessage $message): void
     {
-        die('debug');
         $lock = $this->lockFactory->createLock('insert_freelance', 300, false);
 
         $lock->acquire(true);
-        $this->insertFreelanceJeanPaul->insertFreelanceJeanPaul($message->dto);
+        $freelanceJeanPaul = $this->insertFreelanceJeanPaul->insertFreelanceJeanPaul($message->dto);
+        $this->entityManager->flush();
+
+        $this->freelanceConsolider->consolidate($freelanceJeanPaul->getFreelance());
         $this->entityManager->flush();
     }
 }

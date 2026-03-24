@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FreelanceLinkedInRepository::class)]
+#[ORM\UniqueConstraint(name: "UNIQ_LINKEDIN_URL", columns: ["url"])]
 class FreelanceLinkedIn
 {
     #[ORM\Id]
@@ -28,10 +29,10 @@ class FreelanceLinkedIn
     #[Groups(['freelance_detail'])]
     private ?string $jobTitle = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'freelanceLinkedIns')]
@@ -47,7 +48,7 @@ class FreelanceLinkedIn
 
     public function getFirstName(): ?string
     {
-        return $this->id*$this->id;
+        return $this->firstName;
     }
 
     public function setFirstName(?string $firstName): static
